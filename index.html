@@ -1,0 +1,1308 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>FROGGY MATH ADVENTURE – Perkalian & Pembagian Kelas 3 SD</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Fredoka', 'Nunito', sans-serif;
+            touch-action: manipulation;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0284c7 0%, #0d9488 50%, #047857 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Animated Water Background Patterns */
+        .bg-pond {
+            background-color: #0891b2;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.15) 0%, transparent 20%),
+                radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.12) 0%, transparent 25%),
+                radial-gradient(circle at 50% 50%, rgba(6, 182, 212, 0.4) 0%, transparent 50%);
+        }
+
+        /* Animations */
+        @keyframes frogIdle {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-4px) scale(1.03, 0.97); }
+        }
+
+        @keyframes lilyFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-3px) rotate(1deg); }
+        }
+
+        @keyframes jumpSuccess {
+            0% { transform: translateY(0) scale(1); }
+            30% { transform: translateY(-40px) scale(1.1, 0.9); }
+            70% { transform: translateY(-10px) scale(0.95, 1.05); }
+            100% { transform: translateY(0) scale(1); }
+        }
+
+        @keyframes jumpFail {
+            0% { transform: translateY(0) scale(1); }
+            40% { transform: translateY(-30px) scale(1.05); }
+            80% { transform: translateY(20px) scale(0.9); opacity: 0.8; }
+            100% { transform: translateY(40px) scale(0.5); opacity: 0; }
+        }
+
+        @keyframes splashRipple {
+            0% { transform: scale(0.2); opacity: 1; }
+            100% { transform: scale(2.2); opacity: 0; }
+        }
+
+        @keyframes particleUp {
+            0% { transform: translateY(0) scale(1); opacity: 1; }
+            100% { transform: translateY(-50px) scale(0); opacity: 0; }
+        }
+
+        @keyframes bounceShort {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        @keyframes shakePad {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-6px); }
+            40%, 80% { transform: translateX(6px); }
+        }
+
+        .animate-frog-idle {
+            animation: frogIdle 2.5s infinite ease-in-out;
+        }
+
+        .animate-lily-float {
+            animation: lilyFloat 4s infinite ease-in-out;
+        }
+
+        .animate-jump-success {
+            animation: jumpSuccess 0.5s ease-out forwards;
+        }
+
+        .animate-jump-fail {
+            animation: jumpFail 0.7s ease-in forwards;
+        }
+
+        .animate-shake {
+            animation: shakePad 0.4s ease-in-out;
+        }
+
+        .splash-ring {
+            position: absolute;
+            border: 4px solid #a5f3fc;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: splashRipple 0.6s ease-out forwards;
+        }
+
+        .star-particle {
+            position: absolute;
+            pointer-events: none;
+            animation: particleUp 0.8s ease-out forwards;
+        }
+
+        /* 3D Button Effects */
+        .btn-game-green {
+            background: linear-gradient(to bottom, #4ade80, #16a34a);
+            box-shadow: 0 6px 0 #15803d, 0 10px 15px rgba(0,0,0,0.2);
+        }
+        .btn-game-green:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #15803d, 0 5px 10px rgba(0,0,0,0.2);
+        }
+
+        .btn-game-yellow {
+            background: linear-gradient(to bottom, #fde047, #ca8a04);
+            box-shadow: 0 6px 0 #854d0e, 0 10px 15px rgba(0,0,0,0.2);
+        }
+        .btn-game-yellow:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #854d0e, 0 5px 10px rgba(0,0,0,0.2);
+        }
+
+        .btn-game-blue {
+            background: linear-gradient(to bottom, #38bdf8, #0284c7);
+            box-shadow: 0 6px 0 #0369a1, 0 10px 15px rgba(0,0,0,0.2);
+        }
+        .btn-game-blue:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #0369a1, 0 5px 10px rgba(0,0,0,0.2);
+        }
+
+        .btn-option {
+            background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
+            border: 3px solid #38bdf8;
+            box-shadow: 0 6px 0 #0284c7, 0 8px 12px rgba(0, 0, 0, 0.15);
+            transition: all 0.1s ease;
+        }
+        .btn-option:hover {
+            border-color: #0284c7;
+            background: #f0fdf4;
+        }
+        .btn-option:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #0284c7;
+        }
+
+        /* Glassmorphism Panels */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(8px);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.1);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #10b981;
+            border-radius: 4px;
+        }
+
+        /* Squad Mode Vertical Divider Lines */
+        .squad-divider {
+            border-right: 3px solid rgba(52, 211, 153, 0.5);
+        }
+
+        /* Responsive option buttons in narrow vertical lanes */
+        .btn-option-squad {
+            font-size: clamp(0.75rem, 1.8vw, 1.25rem);
+            padding: 0.35rem 0.2rem;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen text-slate-800 antialiased select-none">
+
+    <header class="w-full bg-emerald-900/40 backdrop-blur-md border-b border-emerald-400/30 text-white px-4 py-2.5 flex items-center justify-between z-30 shrink-0">
+        <div class="flex items-center gap-3">
+            <span class="text-2xl sm:text-3xl animate-bounce">🐸</span>
+            <div>
+                <h1 class="text-base sm:text-xl font-black tracking-wide bg-clip-text text-transparent bg-gradient-to-r from-yellow-300 via-emerald-200 to-teal-200">
+                    FROGGY MATH ADVENTURE
+                </h1>
+                <p class="text-[10px] sm:text-xs text-emerald-200 font-medium hidden sm:block">
+                    Perkalian & Pembagian Kelas 3 SD • Karya: <span class="text-yellow-300 font-bold">Nurul Layalil A’dadiyyah, S.Pd.</span>
+                </p>
+            </div>
+        </div>
+
+        <!-- Global Action Controls -->
+        <div class="flex items-center gap-2">
+            <button id="btnSettings" class="p-2 bg-emerald-700/80 hover:bg-emerald-600 rounded-xl transition text-white text-sm font-bold flex items-center gap-1 shadow-md" title="Pengaturan">
+                ⚙️ <span class="hidden md:inline">Pengaturan</span>
+            </button>
+            <button id="btnBgmToggle" class="p-2 bg-emerald-700/80 hover:bg-emerald-600 rounded-xl transition text-white text-sm font-bold flex items-center gap-1 shadow-md" title="Musik / Sound">
+                🔊 <span id="bgmStatusText" class="hidden md:inline">Musik ON</span>
+            </button>
+            <button id="btnFullscreen" class="p-2 bg-emerald-700/80 hover:bg-emerald-600 rounded-xl transition text-white text-sm font-bold flex items-center gap-1 shadow-md" title="Layar Penuh">
+                ⛶ <span class="hidden md:inline">Layar Penuh</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="flex-1 flex flex-col justify-center items-center relative p-2 sm:p-4 overflow-hidden">
+
+        <!-- ==================== MAIN MENU SCREEN ==================== -->
+        <section id="screenMenu" class="w-full max-w-4xl glass-panel rounded-3xl p-6 sm:p-8 flex flex-col items-center text-center my-auto z-10 transition-all duration-300 transform scale-100">
+            <!-- Animated Hero Badge -->
+            <div class="relative mb-4">
+                <div class="w-24 h-24 sm:w-32 sm:h-32 bg-emerald-200/60 rounded-full flex items-center justify-center border-4 border-emerald-400 shadow-inner animate-pulse">
+                    <!-- Inline SVG Frog Mascot -->
+                    <svg class="w-20 h-20 sm:w-28 sm:h-28 animate-frog-idle" viewBox="0 0 100 100">
+                        <ellipse cx="50" cy="65" rx="35" ry="25" fill="#4ade80" />
+                        <ellipse cx="50" cy="65" rx="25" ry="18" fill="#fef08a" />
+                        <!-- Eyes -->
+                        <circle cx="32" cy="38" r="14" fill="#4ade80" />
+                        <circle cx="68" cy="38" r="14" fill="#4ade80" />
+                        <circle cx="32" cy="38" r="9" fill="#ffffff" />
+                        <circle cx="68" cy="38" r="9" fill="#ffffff" />
+                        <circle cx="34" cy="38" r="5" fill="#0f172a" />
+                        <circle cx="66" cy="38" r="5" fill="#0f172a" />
+                        <!-- Cheeks -->
+                        <ellipse cx="28" cy="62" rx="5" ry="3" fill="#f43f5e" opacity="0.6" />
+                        <ellipse cx="72" cy="62" rx="5" ry="3" fill="#f43f5e" opacity="0.6" />
+                        <!-- Smile -->
+                        <path d="M 40 68 Q 50 78 60 68" stroke="#0f172a" stroke-width="3.5" stroke-linecap="round" fill="none" />
+                    </svg>
+                </div>
+                <span class="absolute -bottom-2 -right-2 bg-yellow-400 text-yellow-950 font-black text-xs px-3 py-1 rounded-full border-2 border-white shadow-md">
+                    Kelas 3 SD
+                </span>
+            </div>
+
+            <h2 class="text-3xl sm:text-5xl font-black text-emerald-900 tracking-tight mb-2">
+                FROGGY MATH ADVENTURE
+            </h2>
+            <p class="text-base sm:text-xl font-bold text-teal-700 mb-6 max-w-xl">
+                Petualangan Katak Menguasai Perkalian & Pembagian Matematika
+            </p>
+
+            <!-- Educational Objectives Banner -->
+            <div class="bg-emerald-50/80 border border-emerald-200 rounded-2xl p-4 mb-8 text-left max-w-xl w-full text-xs sm:text-sm text-emerald-900 shadow-sm">
+                <p class="font-bold text-emerald-800 flex items-center gap-1.5 mb-1.5">
+                    🎯 <span class="uppercase tracking-wider">Tujuan Pembelajaran:</span>
+                </p>
+                <ul class="list-disc list-inside space-y-1 text-slate-700 font-medium">
+                    <li>Melatih kelancaran perkalian & pembagian bilangan sederhana.</li>
+                    <li>Menentukan jawaban soal matematika dengan cepat dan tepat.</li>
+                    <li>Melatih konsentrasi, ketelitian, dan fokus siswa.</li>
+                </ul>
+            </div>
+
+            <!-- Game Mode Cards Selection -->
+            <p class="text-slate-600 font-bold uppercase tracking-wider text-xs mb-3">Pilih Mode Permainan</p>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full max-w-2xl mb-6">
+                <!-- Solo Mode -->
+                <button onclick="startGame('solo')" class="btn-game-green p-4 rounded-2xl text-white flex flex-col items-center justify-center gap-1 transition-all group">
+                    <span class="text-3xl group-hover:scale-125 transition-transform">🐸</span>
+                    <span class="text-xl font-black">SOLO</span>
+                    <span class="text-xs bg-emerald-800/40 px-2 py-0.5 rounded-full font-semibold">1 Pemain</span>
+                </button>
+
+                <!-- Duel Mode -->
+                <button onclick="startGame('duel')" class="btn-game-yellow p-4 rounded-2xl text-yellow-950 flex flex-col items-center justify-center gap-1 transition-all group">
+                    <span class="text-3xl group-hover:scale-125 transition-transform">🐸🐸</span>
+                    <span class="text-xl font-black">DUEL</span>
+                    <span class="text-xs bg-yellow-900/20 px-2 py-0.5 rounded-full font-semibold">2 Pemain</span>
+                </button>
+
+                <!-- Squad Mode -->
+                <button onclick="startGame('squad')" class="btn-game-blue p-4 rounded-2xl text-white flex flex-col items-center justify-center gap-1 transition-all group">
+                    <span class="text-2xl group-hover:scale-125 transition-transform">🐸🐸🐸🐸</span>
+                    <span class="text-xl font-black">SQUAD</span>
+                    <span class="text-xs bg-sky-900/40 px-2 py-0.5 rounded-full font-semibold">4 Pemain</span>
+                </button>
+            </div>
+
+            <!-- Footer Credit Banner -->
+            <div class="text-xs text-slate-500 font-semibold border-t border-slate-200/80 pt-4 w-full">
+                Game Media Pembelajaran Dibuat oleh: <span class="text-emerald-700 font-bold">Nurul Layalil A’dadiyyah, S.Pd.</span>
+            </div>
+        </section>
+
+
+        <!-- ==================== GAMEPLAY CONTAINER SCREEN ==================== -->
+        <section id="screenGame" class="w-full h-full flex-1 flex flex-col hidden z-10 relative">
+            
+            <!-- Dynamic Grid Container for Players (1, 2, or 4 grid columns) -->
+            <div id="playerGridContainer" class="w-full flex-1 grid gap-2 sm:gap-4 h-full">
+                <!-- Player View Cards will be dynamically injected here via JS -->
+            </div>
+
+            <!-- Bottom Floating Control Panel (Exit / Pause) -->
+            <div class="mt-2 flex items-center justify-between bg-slate-900/60 backdrop-blur-md rounded-2xl px-4 py-2 border border-white/20 text-white shrink-0">
+                <button onclick="returnToMenu()" class="px-3 py-1.5 bg-rose-600 hover:bg-rose-500 rounded-xl font-bold text-xs sm:text-sm flex items-center gap-1.5 transition">
+                    ⬅️ Menu Utama
+                </button>
+                <div class="text-xs sm:text-sm font-bold text-emerald-300 flex items-center gap-2">
+                    <span id="gameCategoryBadge" class="bg-emerald-800/80 px-2.5 py-1 rounded-lg">Materi: Campuran</span>
+                    <span id="gameTimerBadge" class="bg-amber-800/80 px-2.5 py-1 rounded-lg hidden">⏱️ Timer: ON</span>
+                </div>
+                <button onclick="togglePause()" id="btnPauseGame" class="px-3 py-1.5 bg-amber-500 hover:bg-amber-400 text-slate-950 rounded-xl font-bold text-xs sm:text-sm transition">
+                    ⏸️ Pause
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ==================== SETTINGS MODAL ==================== -->
+    <div id="modalSettings" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
+        <div class="glass-panel w-full max-w-md rounded-3xl p-6 relative flex flex-col gap-4 animate-bounce-short">
+            <h3 class="text-2xl font-black text-emerald-900 flex items-center gap-2">
+                ⚙️ Pengaturan Game
+            </h3>
+
+            <!-- Category Selection -->
+            <div>
+                <label class="block text-xs font-black text-slate-600 uppercase tracking-wider mb-1.5">Materi Soal:</label>
+                <div class="grid grid-cols-3 gap-2">
+                    <button onclick="setCategory('perkalian')" id="btnCatPerkalian" class="py-2 px-3 rounded-xl border-2 border-emerald-500 font-bold text-xs text-center bg-emerald-100 text-emerald-800">
+                        Perkalian
+                    </button>
+                    <button onclick="setCategory('pembagian')" id="btnCatPembagian" class="py-2 px-3 rounded-xl border-2 border-slate-300 font-bold text-xs text-center text-slate-600">
+                        Pembagian
+                    </button>
+                    <button onclick="setCategory('campuran')" id="btnCatCampuran" class="py-2 px-3 rounded-xl border-2 border-slate-300 font-bold text-xs text-center text-slate-600">
+                        Campuran
+                    </button>
+                </div>
+            </div>
+
+            <!-- Question Count -->
+            <div>
+                <label class="block text-xs font-black text-slate-600 uppercase tracking-wider mb-1.5">Jumlah Soal:</label>
+                <div class="grid grid-cols-4 gap-2">
+                    <button onclick="setQuestionLimit(10)" id="btnLimit10" class="py-2 rounded-xl border-2 border-emerald-500 font-bold text-xs bg-emerald-100 text-emerald-800">10</button>
+                    <button onclick="setQuestionLimit(20)" id="btnLimit20" class="py-2 rounded-xl border-2 border-slate-300 font-bold text-xs text-slate-600">20</button>
+                    <button onclick="setQuestionLimit(30)" id="btnLimit30" class="py-2 rounded-xl border-2 border-slate-300 font-bold text-xs text-slate-600">30</button>
+                    <button onclick="setQuestionLimit(0)" id="btnLimitInf" class="py-2 rounded-xl border-2 border-slate-300 font-bold text-xs text-slate-600">∞ Unlimited</button>
+                </div>
+            </div>
+
+            <!-- Timer Settings -->
+            <div>
+                <label class="block text-xs font-black text-slate-600 uppercase tracking-wider mb-1.5">Waktu Jawab (Timer):</label>
+                <div class="grid grid-cols-4 gap-2">
+                    <button onclick="setTimerSec(0)" id="btnTimerOff" class="py-2 rounded-xl border-2 border-emerald-500 font-bold text-xs bg-emerald-100 text-emerald-800">OFF</button>
+                    <button onclick="setTimerSec(10)" id="btnTimer10" class="py-2 rounded-xl border-2 border-slate-300 font-bold text-xs text-slate-600">10 Detik</button>
+                    <button onclick="setTimerSec(15)" id="btnTimer15" class="py-2 rounded-xl border-2 border-slate-300 font-bold text-xs text-slate-600">15 Detik</button>
+                    <button onclick="setTimerSec(20)" id="btnTimer20" class="py-2 rounded-xl border-2 border-slate-300 font-bold text-xs text-slate-600">20 Detik</button>
+                </div>
+            </div>
+
+            <!-- Audio Toggles -->
+            <div class="flex items-center justify-between bg-slate-100 p-3 rounded-2xl">
+                <span class="text-xs font-bold text-slate-700">Background Music (BGM)</span>
+                <input type="checkbox" id="chkBgm" class="w-5 h-5 accent-emerald-600" checked onchange="toggleBgmCheck(this.checked)">
+            </div>
+            <div class="flex items-center justify-between bg-slate-100 p-3 rounded-2xl">
+                <span class="text-xs font-bold text-slate-700">Efek Suara (SFX)</span>
+                <input type="checkbox" id="chkSfx" class="w-5 h-5 accent-emerald-600" checked onchange="toggleSfxCheck(this.checked)">
+            </div>
+
+            <!-- Close Button -->
+            <button onclick="closeModal('modalSettings')" class="w-full btn-game-green py-3 rounded-2xl text-white font-black text-sm mt-2">
+                Simpan & Tutup
+            </button>
+        </div>
+    </div>
+
+
+    <!-- ==================== GAME RESULT / OVER MODAL ==================== -->
+    <div id="modalResult" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 z-50 hidden">
+        <div class="glass-panel w-full max-w-xl rounded-3xl p-6 sm:p-8 flex flex-col items-center text-center relative overflow-y-auto max-h-[90vh]">
+            <span class="text-5xl mb-2 animate-bounce">🎉</span>
+            <h3 class="text-3xl font-black text-emerald-900 mb-1">PERMAINAN SELESAI!</h3>
+            <p class="text-xs sm:text-sm font-bold text-slate-600 mb-6">Hasil Akhir Petualangan Matematika</p>
+
+            <!-- Results List Container for All Players -->
+            <div id="resultPlayersList" class="w-full flex flex-col gap-4 mb-6">
+                <!-- Dynamically filled with player stats -->
+            </div>
+
+            <!-- Motivation Message -->
+            <div class="bg-amber-100 border border-amber-300 rounded-2xl p-4 w-full mb-6 text-amber-900 font-bold text-xs sm:text-sm shadow-sm">
+                🌟 <span id="motivationText">Hebat sekali! Terus berlatih agar semakin jago dan cepat dalam perkalian & pembagian!</span>
+            </div>
+
+            <!-- Action Options -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 w-full">
+                <button onclick="restartCurrentGame()" class="btn-game-green py-3 px-4 rounded-2xl text-white font-black text-xs sm:text-sm">
+                    🔄 Main Lagi
+                </button>
+                <button onclick="closeModal('modalResult'); returnToMenu();" class="btn-game-yellow py-3 px-4 rounded-2xl text-yellow-950 font-black text-xs sm:text-sm">
+                    🐸 Pilih Mode
+                </button>
+                <button onclick="closeModal('modalResult'); returnToMenu();" class="btn-game-blue py-3 px-4 rounded-2xl text-white font-black text-xs sm:text-sm">
+                    🏠 Menu Utama
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ==================== PAUSE MODAL ==================== -->
+    <div id="modalPause" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
+        <div class="glass-panel w-full max-w-sm rounded-3xl p-6 text-center flex flex-col items-center gap-4">
+            <span class="text-4xl">⏸️</span>
+            <h3 class="text-2xl font-black text-emerald-900">PERMAINAN DIPAUSE</h3>
+            <p class="text-xs text-slate-600 font-medium">Istirahat sejenak sebelum melanjutkannya lagi!</p>
+            
+            <button onclick="togglePause()" class="w-full btn-game-green py-3 rounded-2xl text-white font-black text-sm">
+                ▶️ Lanjutkan Permainan
+            </button>
+            <button onclick="togglePause(); returnToMenu();" class="w-full bg-slate-200 hover:bg-slate-300 text-slate-800 py-3 rounded-2xl font-black text-sm">
+                🏠 Keluar ke Menu
+            </button>
+        </div>
+    </div>
+
+
+    <script>
+        /* ==========================================================================
+           AUDIO MANAGER (Synthesized Web Audio API - Zero External Asset Dependency)
+           ========================================================================== */
+        class AudioManager {
+            constructor() {
+                this.ctx = null;
+                this.bgmEnabled = true;
+                this.sfxEnabled = true;
+                this.bgmInterval = null;
+                this.isPlayingBgm = false;
+            }
+
+            init() {
+                if (!this.ctx) {
+                    const AudioContext = window.AudioContext || window.webkitAudioContext;
+                    if (AudioContext) this.ctx = new AudioContext();
+                }
+                if (this.ctx && this.ctx.state === 'suspended') {
+                    this.ctx.resume();
+                }
+            }
+
+            playJump() {
+                if (!this.sfxEnabled) return;
+                this.init();
+                if (!this.ctx) return;
+
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'sine';
+                
+                const now = this.ctx.currentTime;
+                osc.frequency.setValueAtTime(180, now);
+                osc.frequency.exponentialRampToValueAtTime(550, now + 0.15);
+
+                gain.gain.setValueAtTime(0.3, now);
+                gain.gain.linearRampToValueAtTime(0.01, now + 0.15);
+
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+
+                osc.start(now);
+                osc.stop(now + 0.15);
+            }
+
+            playCorrect() {
+                if (!this.sfxEnabled) return;
+                this.init();
+                if (!this.ctx) return;
+
+                const now = this.ctx.currentTime;
+                const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+                
+                notes.forEach((freq, idx) => {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(freq, now + idx * 0.08);
+
+                    gain.gain.setValueAtTime(0.25, now + idx * 0.08);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.08 + 0.25);
+
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+
+                    osc.start(now + idx * 0.08);
+                    osc.stop(now + idx * 0.08 + 0.25);
+                });
+            }
+
+            playWrong() {
+                if (!this.sfxEnabled) return;
+                this.init();
+                if (!this.ctx) return;
+
+                const now = this.ctx.currentTime;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(220, now);
+                osc.frequency.linearRampToValueAtTime(80, now + 0.35);
+
+                gain.gain.setValueAtTime(0.3, now);
+                gain.gain.linearRampToValueAtTime(0.01, now + 0.35);
+
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+
+                osc.start(now);
+                osc.stop(now + 0.35);
+            }
+
+            playSplash() {
+                if (!this.sfxEnabled) return;
+                this.init();
+                if (!this.ctx) return;
+
+                // Create synthesized noise buffer for water splash
+                const bufferSize = this.ctx.sampleRate * 0.4;
+                const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+                const data = buffer.getChannelData(0);
+                for (let i = 0; i < bufferSize; i++) {
+                    data[i] = Math.random() * 2 - 1;
+                }
+
+                const noise = this.ctx.createBufferSource();
+                noise.buffer = buffer;
+
+                const filter = this.ctx.createBiquadFilter();
+                filter.type = 'bandpass';
+                filter.frequency.setValueAtTime(800, this.ctx.currentTime);
+                filter.frequency.exponentialRampToValueAtTime(150, this.ctx.currentTime + 0.4);
+
+                const gain = this.ctx.createGain();
+                gain.gain.setValueAtTime(0.4, this.ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.4);
+
+                noise.connect(filter);
+                filter.connect(gain);
+                gain.connect(this.ctx.destination);
+
+                noise.start();
+            }
+
+            playVictory() {
+                if (!this.sfxEnabled) return;
+                this.init();
+                if (!this.ctx) return;
+
+                const melody = [261.63, 329.63, 392.00, 523.25, 659.25, 783.99];
+                const now = this.ctx.currentTime;
+
+                melody.forEach((freq, idx) => {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.value = freq;
+
+                    gain.gain.setValueAtTime(0.2, now + idx * 0.12);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.12 + 0.3);
+
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+
+                    osc.start(now + idx * 0.12);
+                    osc.stop(now + idx * 0.12 + 0.3);
+                });
+            }
+
+            startBgm() {
+                if (!this.bgmEnabled || this.isPlayingBgm) return;
+                this.init();
+                this.isPlayingBgm = true;
+
+                // Simple cheerful synthesized melodic pattern
+                const notes = [261.63, 329.63, 392.00, 329.63, 349.23, 392.00, 440.00, 392.00];
+                let noteIndex = 0;
+
+                this.bgmInterval = setInterval(() => {
+                    if (!this.bgmEnabled || !this.ctx) return;
+                    const now = this.ctx.currentTime;
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(notes[noteIndex], now);
+
+                    gain.gain.setValueAtTime(0.05, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+
+                    osc.start(now);
+                    osc.stop(now + 0.3);
+
+                    noteIndex = (noteIndex + 1) % notes.length;
+                }, 350);
+            }
+
+            stopBgm() {
+                this.isPlayingBgm = false;
+                if (this.bgmInterval) {
+                    clearInterval(this.bgmInterval);
+                    this.bgmInterval = null;
+                }
+            }
+        }
+
+        const audioManager = new AudioManager();
+
+
+        /* ==========================================================================
+           QUESTION GENERATOR CLASS
+           ========================================================================== */
+        class QuestionGenerator {
+            static generate(category = 'campuran') {
+                let isMultiplication = true;
+
+                if (category === 'perkalian') {
+                    isMultiplication = true;
+                } else if (category === 'pembagian') {
+                    isMultiplication = false;
+                } else {
+                    isMultiplication = Math.random() > 0.5;
+                }
+
+                if (isMultiplication) {
+                    return this.generateMultiplication();
+                } else {
+                    return this.generateDivision();
+                }
+            }
+
+            static generateMultiplication() {
+                // Grade 3 Level Factors: 2 - 9
+                const a = Math.floor(Math.random() * 8) + 2;
+                const b = Math.floor(Math.random() * 9) + 2;
+                const correct = a * b;
+
+                const distractors = new Set();
+                while (distractors.size < 3) {
+                    // Generate smart plausible distractors
+                    const offset = (Math.floor(Math.random() * 5) - 2) * (Math.random() > 0.5 ? 1 : a);
+                    let wrong = correct + (offset === 0 ? (Math.random() > 0.5 ? 2 : -2) : offset);
+                    if (wrong <= 0 || wrong === correct) {
+                        wrong = correct + Math.floor(Math.random() * 6) + 1;
+                    }
+                    distractors.add(wrong);
+                }
+
+                const options = [correct, ...Array.from(distractors)];
+                this.shuffle(options);
+
+                return {
+                    text: `${a} × ${b} = ?`,
+                    correctAnswer: correct,
+                    options: options
+                };
+            }
+
+            static generateDivision() {
+                // Divisors 2 - 9, Quotients 2 - 9 -> Dividends up to 81
+                const divisor = Math.floor(Math.random() * 8) + 2;
+                const quotient = Math.floor(Math.random() * 8) + 2;
+                const dividend = divisor * quotient;
+                const correct = quotient;
+
+                const distractors = new Set();
+                while (distractors.size < 3) {
+                    let wrong = correct + (Math.floor(Math.random() * 7) - 3);
+                    if (wrong <= 0 || wrong === correct) {
+                        wrong = correct + Math.floor(Math.random() * 4) + 1;
+                    }
+                    distractors.add(wrong);
+                }
+
+                const options = [correct, ...Array.from(distractors)];
+                this.shuffle(options);
+
+                return {
+                    text: `${dividend} ÷ ${divisor} = ?`,
+                    correctAnswer: correct,
+                    options: options
+                };
+            }
+
+            static shuffle(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+            }
+        }
+
+
+        /* ==========================================================================
+           GAME STATE & PLAYER CONTROLLER
+           ========================================================================== */
+        let globalConfig = {
+            mode: 'solo', // 'solo', 'duel', 'squad'
+            category: 'campuran',
+            questionLimit: 10, // 10, 20, 30, or 0 (unlimited)
+            timerSec: 0, // 0 = OFF
+            bgm: true,
+            sfx: true
+        };
+
+        let activePlayers = [];
+        let isPaused = false;
+
+        class PlayerInstance {
+            constructor(id, name, containerEl) {
+                this.id = id;
+                this.name = name;
+                this.containerEl = containerEl;
+                
+                this.score = 0;
+                this.lives = 3;
+                this.combo = 0;
+                this.maxCombo = 0;
+                this.correctCount = 0;
+                this.wrongCount = 0;
+                this.totalAnswered = 0;
+
+                this.currentQuestion = null;
+                this.isLocked = false;
+                this.timerLeft = globalConfig.timerSec;
+                this.timerInterval = null;
+
+                this.initDOM();
+            }
+
+            initDOM() {
+                const isSquad = globalConfig.mode === 'squad';
+                this.containerEl.innerHTML = `
+                    <div class="h-full w-full bg-pond/80 rounded-2xl sm:rounded-3xl p-1 sm:p-2.5 border border-cyan-300/40 shadow-lg flex flex-col justify-between relative overflow-hidden">
+                        
+                        <!-- Top Bar: Player Info & Stats -->
+                        <div class="flex flex-col xl:flex-row items-center justify-between bg-slate-900/70 backdrop-blur-md rounded-xl p-1 sm:p-1.5 text-white z-10 gap-0.5 sm:gap-1 text-center">
+                            <div class="flex items-center gap-1">
+                                <span class="bg-emerald-500 text-slate-950 font-black text-[9px] sm:text-xs px-1.5 py-0.5 rounded-full">
+                                    ${this.name}
+                                </span>
+                                <span class="text-[10px] sm:text-xs font-bold text-yellow-300 flex items-center gap-0.5">
+                                    ⭐ <span id="score-${this.id}">0</span>
+                                </span>
+                            </div>
+
+                            <div class="flex items-center gap-1">
+                                <!-- Combo Badge -->
+                                <span id="combo-${this.id}" class="text-[8px] sm:text-[10px] font-black text-orange-400 bg-orange-950/60 px-1 py-0.5 rounded border border-orange-500/40 hidden">
+                                    🔥 <span id="comboVal-${this.id}">0</span>x
+                                </span>
+
+                                <!-- Hearts Lives -->
+                                <div id="lives-${this.id}" class="flex items-center gap-0.5 text-[10px] sm:text-xs tracking-tighter">
+                                    ❤️ ❤️ ❤️
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Timer Bar (If enabled) -->
+                        <div id="timerBarWrap-${this.id}" class="w-full bg-slate-700/60 h-1 sm:h-1.5 rounded-full mt-1 overflow-hidden hidden">
+                            <div id="timerBar-${this.id}" class="bg-emerald-400 h-full w-full transition-all duration-1000 ease-linear"></div>
+                        </div>
+
+                        <!-- Main Frog Pond Canvas Area -->
+                        <div class="flex-1 relative my-1 flex flex-col items-center justify-center min-h-[90px] sm:min-h-[140px]">
+                            
+                            <!-- Floating Star Particles Container -->
+                            <div id="particles-${this.id}" class="absolute inset-0 pointer-events-none z-20"></div>
+
+                            <!-- Animated Decorative Water Ripples -->
+                            <div class="absolute w-14 h-14 sm:w-24 sm:h-24 border border-cyan-200/20 rounded-full animate-ping pointer-events-none"></div>
+
+                            <!-- Water Lily Platform & Frog -->
+                            <div id="stagePlatform-${this.id}" class="relative transition-transform duration-300 flex flex-col items-center">
+                                
+                                <!-- Cute SVG Frog Character -->
+                                <div id="frog-${this.id}" class="w-10 h-10 sm:w-16 sm:h-16 md:w-20 md:h-20 z-10 animate-frog-idle transition-all duration-300">
+                                    <svg class="w-full h-full drop-shadow-md" viewBox="0 0 100 100">
+                                        <ellipse cx="50" cy="65" rx="35" ry="25" fill="#4ade80" />
+                                        <ellipse cx="50" cy="65" rx="25" ry="18" fill="#fef08a" />
+                                        <circle cx="32" cy="38" r="14" fill="#4ade80" />
+                                        <circle cx="68" cy="38" r="14" fill="#4ade80" />
+                                        <circle cx="32" cy="38" r="9" fill="#ffffff" />
+                                        <circle cx="68" cy="38" r="9" fill="#ffffff" />
+                                        <circle cx="34" cy="38" r="5" fill="#0f172a" />
+                                        <circle cx="66" cy="38" r="5" fill="#0f172a" />
+                                        <ellipse cx="28" cy="62" rx="5" ry="3" fill="#f43f5e" opacity="0.6" />
+                                        <ellipse cx="72" cy="62" rx="5" ry="3" fill="#f43f5e" opacity="0.6" />
+                                        <path d="M 40 68 Q 50 78 60 68" stroke="#0f172a" stroke-width="3.5" stroke-linecap="round" fill="none" />
+                                    </svg>
+                                </div>
+
+                                <!-- Lily Pad Base -->
+                                <div id="lilyPad-${this.id}" class="w-16 h-7 sm:w-22 sm:h-10 bg-emerald-600 rounded-[50%] border-2 sm:border-3 border-emerald-400 shadow-lg relative -mt-3 sm:-mt-4 flex items-center justify-center animate-lily-float">
+                                    <div class="w-2 h-2 sm:w-3 sm:h-3 bg-yellow-300 rounded-full border border-white absolute -top-0.5 right-2 shadow"></div>
+                                </div>
+                            </div>
+
+                            <!-- Feedback Alert Banner -->
+                            <div id="feedback-${this.id}" class="absolute top-1 bg-slate-900/80 backdrop-blur-md px-2 py-0.5 rounded-full text-white font-black text-[9px] sm:text-xs border border-white/20 transform scale-0 transition-transform duration-200 z-30">
+                                BENAR! 🎉
+                            </div>
+                        </div>
+
+                        <!-- Question Equation Display Box -->
+                        <div class="bg-gradient-to-r from-emerald-800 to-teal-800 rounded-lg sm:rounded-xl p-1 sm:p-1.5 text-center text-white border border-emerald-300/50 shadow-md mb-1">
+                            <span class="text-[8px] sm:text-[10px] text-emerald-200 uppercase tracking-wider font-bold block">Soal</span>
+                            <span id="questionText-${this.id}" class="text-xs sm:text-lg md:text-xl font-black tracking-wide text-yellow-300">
+                                6 × 4 = ?
+                            </span>
+                        </div>
+
+                        <!-- 4 Options Pad Buttons Grid -->
+                        <div id="optionsGrid-${this.id}" class="grid grid-cols-2 gap-1 z-10">
+                            <!-- Buttons will be populated dynamically -->
+                        </div>
+                    </div>
+                `;
+            }
+
+            nextQuestion() {
+                if (this.lives <= 0) return;
+
+                // Check question limit
+                if (globalConfig.questionLimit > 0 && this.totalAnswered >= globalConfig.questionLimit) {
+                    this.finishGame();
+                    return;
+                }
+
+                this.isLocked = false;
+                this.currentQuestion = QuestionGenerator.generate(globalConfig.category);
+
+                // Update Question Text
+                const qTextEl = document.getElementById(`questionText-${this.id}`);
+                if (qTextEl) qTextEl.innerText = this.currentQuestion.text;
+
+                // Render Options
+                const gridEl = document.getElementById(`optionsGrid-${this.id}`);
+                if (gridEl) {
+                    gridEl.innerHTML = '';
+                    this.currentQuestion.options.forEach(opt => {
+                        const btn = document.createElement('button');
+                        btn.className = 'btn-option py-1.5 sm:py-2.5 px-1 rounded-xl sm:rounded-2xl font-black text-sm sm:text-xl text-slate-800 active:scale-95 transition-all';
+                        btn.innerText = opt;
+                        btn.onclick = () => this.handleAnswer(opt, btn);
+                        gridEl.appendChild(btn);
+                    });
+                }
+
+                // Reset Frog & Stage visual state
+                const frog = document.getElementById(`frog-${this.id}`);
+                if (frog) {
+                    frog.className = 'w-14 h-14 sm:w-20 sm:h-20 md:w-24 md:h-24 z-10 animate-frog-idle transition-all duration-300 opacity-100 transform translate-y-0';
+                }
+
+                // Start Timer if enabled
+                this.startTimer();
+            }
+
+            startTimer() {
+                this.stopTimer();
+                if (globalConfig.timerSec <= 0) return;
+
+                const timerWrap = document.getElementById(`timerBarWrap-${this.id}`);
+                const timerBar = document.getElementById(`timerBar-${this.id}`);
+                if (timerWrap) timerWrap.classList.remove('hidden');
+
+                this.timerLeft = globalConfig.timerSec;
+                if (timerBar) {
+                    timerBar.style.transition = 'none';
+                    timerBar.style.width = '100%';
+                }
+
+                setTimeout(() => {
+                    if (timerBar) {
+                        timerBar.style.transition = `width ${globalConfig.timerSec}s linear`;
+                        timerBar.style.width = '0%';
+                    }
+                }, 50);
+
+                this.timerInterval = setTimeout(() => {
+                    if (!this.isLocked) {
+                        this.handleAnswer(null, null, true); // Timeout trigger
+                    }
+                }, globalConfig.timerSec * 1000);
+            }
+
+            stopTimer() {
+                if (this.timerInterval) {
+                    clearTimeout(this.timerInterval);
+                    this.timerInterval = null;
+                }
+            }
+
+            handleAnswer(chosenVal, btnEl, isTimeout = false) {
+                if (this.isLocked || isPaused) return;
+                this.isLocked = true;
+                this.stopTimer();
+                this.totalAnswered++;
+
+                const isCorrect = !isTimeout && (chosenVal === this.currentQuestion.correctAnswer);
+                const frog = document.getElementById(`frog-${this.id}`);
+                const pad = document.getElementById(`lilyPad-${this.id}`);
+                const feedback = document.getElementById(`feedback-${this.id}`);
+
+                if (isCorrect) {
+                    // CORRECT ANSWER FLOW
+                    audioManager.playJump();
+                    setTimeout(() => audioManager.playCorrect(), 200);
+
+                    // Add score and combo
+                    this.combo++;
+                    if (this.combo > this.maxCombo) this.maxCombo = this.combo;
+                    this.correctCount++;
+                    const comboBonus = (this.combo > 1) ? (this.combo - 1) * 5 : 0;
+                    this.score += 10 + comboBonus;
+
+                    this.updateScoreUI();
+
+                    // Animations
+                    if (frog) frog.className = 'w-20 h-20 sm:w-28 sm:h-28 z-10 animate-jump-success';
+                    if (pad) pad.classList.add('animate-bounce');
+                    
+                    this.spawnParticles();
+                    this.showFeedback('BENAR! 🌟', 'bg-emerald-600 text-white');
+
+                    if (btnEl) {
+                        btnEl.classList.remove('btn-option');
+                        btnEl.classList.add('bg-emerald-500', 'text-white', 'border-emerald-700');
+                    }
+
+                    // Proceed to next question after animation
+                    setTimeout(() => {
+                        if (pad) pad.classList.remove('animate-bounce');
+                        this.hideFeedback();
+                        this.nextQuestion();
+                    }, 1000);
+
+                } else {
+                    // WRONG ANSWER OR TIMEOUT FLOW
+                    audioManager.playJump();
+                    setTimeout(() => {
+                        audioManager.playWrong();
+                        audioManager.playSplash();
+                    }, 300);
+
+                    this.combo = 0;
+                    this.wrongCount++;
+                    this.lives--;
+
+                    this.updateScoreUI();
+
+                    if (frog) frog.className = 'w-20 h-20 sm:w-28 sm:h-28 z-10 animate-jump-fail';
+                    if (pad) pad.classList.add('animate-shake');
+
+                    this.showFeedback(isTimeout ? 'WAKTU HABIS! ⏱️' : 'COBA LAGI! 💦', 'bg-rose-600 text-white');
+
+                    if (btnEl) {
+                        btnEl.classList.remove('btn-option');
+                        btnEl.classList.add('bg-rose-500', 'text-white', 'border-rose-700');
+                    }
+
+                    // Create splash ring effect
+                    this.createSplashEffect();
+
+                    setTimeout(() => {
+                        if (pad) pad.classList.remove('animate-shake');
+                        this.hideFeedback();
+
+                        if (this.lives <= 0) {
+                            this.finishGame();
+                        } else {
+                            this.nextQuestion();
+                        }
+                    }, 1200);
+                }
+            }
+
+            updateScoreUI() {
+                const scoreEl = document.getElementById(`score-${this.id}`);
+                if (scoreEl) scoreEl.innerText = this.score;
+
+                // Combo UI
+                const comboWrap = document.getElementById(`combo-${this.id}`);
+                const comboVal = document.getElementById(`comboVal-${this.id}`);
+                if (comboWrap && comboVal) {
+                    if (this.combo >= 2) {
+                        comboVal.innerText = this.combo;
+                        comboWrap.classList.remove('hidden');
+                    } else {
+                        comboWrap.classList.add('hidden');
+                    }
+                }
+
+                // Hearts UI
+                const livesEl = document.getElementById(`lives-${this.id}`);
+                if (livesEl) {
+                    let hearts = '';
+                    for (let i = 0; i < 3; i++) {
+                        hearts += (i < this.lives) ? '❤️ ' : '🖤 ';
+                    }
+                    livesEl.innerText = hearts.trim();
+                }
+            }
+
+            showFeedback(text, bgClasses) {
+                const fb = document.getElementById(`feedback-${this.id}`);
+                if (fb) {
+                    fb.innerText = text;
+                    fb.className = `absolute top-2 backdrop-blur-md px-4 py-1.5 rounded-full font-black text-xs sm:text-sm border border-white/20 z-30 transform scale-100 transition-transform duration-200 ${bgClasses}`;
+                }
+            }
+
+            hideFeedback() {
+                const fb = document.getElementById(`feedback-${this.id}`);
+                if (fb) fb.classList.add('scale-0');
+            }
+
+            spawnParticles() {
+                const pContainer = document.getElementById(`particles-${this.id}`);
+                if (!pContainer) return;
+
+                for (let i = 0; i < 6; i++) {
+                    const star = document.createElement('div');
+                    star.className = 'star-particle text-yellow-300 text-lg sm:text-2xl';
+                    star.innerText = '⭐';
+                    star.style.left = `${30 + Math.random() * 40}%`;
+                    star.style.top = `${40 + Math.random() * 20}%`;
+                    pContainer.appendChild(star);
+
+                    setTimeout(() => star.remove(), 800);
+                }
+            }
+
+            createSplashEffect() {
+                const pContainer = document.getElementById(`particles-${this.id}`);
+                if (!pContainer) return;
+
+                const ring = document.createElement('div');
+                ring.className = 'splash-ring w-24 h-24 top-1/2 left-1/2 -ml-12 -mt-12';
+                pContainer.appendChild(ring);
+
+                setTimeout(() => ring.remove(), 600);
+            }
+
+            finishGame() {
+                this.stopTimer();
+                checkAllPlayersFinished();
+            }
+        }
+
+
+        /* ==========================================================================
+           MAIN GAME ENGINE & MODE CONTROLLER
+           ========================================================================== */
+        function startGame(mode) {
+            audioManager.init();
+            globalConfig.mode = mode;
+
+            // Transition Screen Fade
+            const menuScreen = document.getElementById('screenMenu');
+            const gameScreen = document.getElementById('screenGame');
+
+            menuScreen.classList.add('opacity-0', 'scale-95');
+            setTimeout(() => {
+                menuScreen.classList.add('hidden');
+                menuScreen.classList.remove('opacity-0', 'scale-95');
+
+                gameScreen.classList.remove('hidden');
+                gameScreen.classList.add('opacity-100');
+
+                setupPlayerGrid(mode);
+                if (globalConfig.bgm) audioManager.startBgm();
+            }, 300);
+        }
+
+        function setupPlayerGrid(mode) {
+            const gridContainer = document.getElementById('playerGridContainer');
+            gridContainer.innerHTML = '';
+            activePlayers = [];
+
+            let playerCount = 1;
+            if (mode === 'duel') playerCount = 2;
+            if (mode === 'squad') playerCount = 4;
+
+            // Adjust Grid Columns and Vertical Dividers according to Mode
+            if (mode === 'solo') {
+                gridContainer.className = 'w-full flex-1 grid grid-cols-1 gap-4 max-w-2xl mx-auto h-full';
+            } else if (mode === 'duel') {
+                gridContainer.className = 'w-full flex-1 grid grid-cols-2 gap-2 sm:gap-3 h-full divide-x-2 sm:divide-x-4 divide-emerald-400/80 bg-emerald-950/20 p-2 rounded-3xl border-2 border-emerald-400/40';
+            } else if (mode === 'squad') {
+                // 4 Pemain Berjajar Menyamping (4 Kolom Vertikal Penuh) dengan Garis Pembatas Vertikal Jelas
+                gridContainer.className = 'w-full flex-1 grid grid-cols-4 gap-1 sm:gap-2 h-full divide-x-2 sm:divide-x-4 divide-emerald-400/80 bg-emerald-950/20 p-1 sm:p-2 rounded-3xl border-2 border-emerald-400/50 overflow-x-auto min-w-[320px]';
+            }
+
+            // Create Player Instances
+            for (let i = 1; i <= playerCount; i++) {
+                const playerCard = document.createElement('div');
+                playerCard.className = 'w-full h-full min-h-0 flex flex-col justify-between';
+                gridContainer.appendChild(playerCard);
+
+                const instance = new PlayerInstance(i, `P${i}`, playerCard);
+                activePlayers.push(instance);
+                instance.nextQuestion();
+            }
+
+            // Update Header Status Badges
+            document.getElementById('gameCategoryBadge').innerText = `Materi: ${globalConfig.category.toUpperCase()}`;
+            const timerBadge = document.getElementById('gameTimerBadge');
+            if (globalConfig.timerSec > 0) {
+                timerBadge.classList.remove('hidden');
+                timerBadge.innerText = `⏱️ Timer: ${globalConfig.timerSec}s`;
+            } else {
+                timerBadge.classList.add('hidden');
+            }
+        }
+
+        function checkAllPlayersFinished() {
+            const allFinished = activePlayers.every(p => p.lives <= 0 || (globalConfig.questionLimit > 0 && p.totalAnswered >= globalConfig.questionLimit));
+            if (allFinished) {
+                setTimeout(showResultModal, 800);
+            }
+        }
+
+        function showResultModal() {
+            audioManager.playVictory();
+            const listEl = document.getElementById('resultPlayersList');
+            listEl.innerHTML = '';
+
+            activePlayers.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'bg-slate-100 rounded-2xl p-4 border border-slate-200 text-left flex flex-col sm:flex-row items-center justify-between gap-3';
+                card.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <span class="text-3xl">🐸</span>
+                        <div>
+                            <h4 class="font-black text-slate-800 text-base sm:text-lg">${p.name}</h4>
+                            <p class="text-xs text-slate-500 font-semibold">
+                                Correct: <span class="text-emerald-600 font-bold">${p.correctCount}</span> | 
+                                Wrong: <span class="text-rose-500 font-bold">${p.wrongCount}</span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-4 text-right">
+                        <div>
+                            <span class="text-[10px] text-slate-400 font-bold uppercase block">Combo Terbaik</span>
+                            <span class="text-xs font-black text-orange-500">🔥 ${p.maxCombo}x</span>
+                        </div>
+                        <div class="bg-emerald-100 border border-emerald-300 px-3 py-1.5 rounded-xl">
+                            <span class="text-[10px] text-emerald-700 font-bold uppercase block">Skor Akhir</span>
+                            <span class="text-xl font-black text-emerald-800">⭐ ${p.score}</span>
+                        </div>
+                    </div>
+                `;
+                listEl.appendChild(card);
+            });
+
+            // Motivation Quotes Generator
+            const quotes = [
+                "Hebat sekali! Terus berlatih agar semakin jago dan cepat dalam perkalian & pembagian!",
+                "Luar biasa! Matematika itu seru dan mudah jika kita terus berlatih!",
+                "Kerja bagus! Kamu sudah membuktikan kalau katakmu bisa melompat tinggi dengan matematika!",
+                "Jangan menyerah! Setiap latihan membuat otakmu semakin cerdas dan tangkas!"
+            ];
+            document.getElementById('motivationText').innerText = quotes[Math.floor(Math.random() * quotes.length)];
+
+            openModal('modalResult');
+        }
+
+        function restartCurrentGame() {
+            closeModal('modalResult');
+            setupPlayerGrid(globalConfig.mode);
+        }
+
+        function returnToMenu() {
+            activePlayers.forEach(p => p.stopTimer());
+            audioManager.stopBgm();
+
+            document.getElementById('screenGame').classList.add('hidden');
+            const menuScreen = document.getElementById('screenMenu');
+            menuScreen.classList.remove('hidden');
+        }
+
+        function togglePause() {
+            isPaused = !isPaused;
+            if (isPaused) {
+                openModal('modalPause');
+            } else {
+                closeModal('modalPause');
+            }
+        }
+
+
+        /* ==========================================================================
+           UI SETTINGS & CONTROLS BINDING
+           ========================================================================== */
+        document.getElementById('btnSettings').onclick = () => openModal('modalSettings');
+
+        document.getElementById('btnBgmToggle').onclick = () => {
+            globalConfig.bgm = !globalConfig.bgm;
+            document.getElementById('chkBgm').checked = globalConfig.bgm;
+            updateBgmUI();
+        };
+
+        function toggleBgmCheck(val) {
+            globalConfig.bgm = val;
+            updateBgmUI();
+        }
+
+        function toggleSfxCheck(val) {
+            globalConfig.sfx = val;
+            audioManager.sfxEnabled = val;
+        }
+
+        function updateBgmUI() {
+            audioManager.bgmEnabled = globalConfig.bgm;
+            const bgmText = document.getElementById('bgmStatusText');
+            if (globalConfig.bgm) {
+                bgmText.innerText = 'Musik ON';
+                audioManager.startBgm();
+            } else {
+                bgmText.innerText = 'Musik OFF';
+                audioManager.stopBgm();
+            }
+        }
+
+        // Category Selectors
+        function setCategory(cat) {
+            globalConfig.category = cat;
+            ['btnCatPerkalian', 'btnCatPembagian', 'btnCatCampuran'].forEach(id => {
+                const el = document.getElementById(id);
+                el.className = 'py-2 px-3 rounded-xl border-2 border-slate-300 font-bold text-xs text-center text-slate-600';
+            });
+
+            if (cat === 'perkalian') document.getElementById('btnCatPerkalian').className = 'py-2 px-3 rounded-xl border-2 border-emerald-500 font-bold text-xs text-center bg-emerald-100 text-emerald-800';
+            if (cat === 'pembagian') document.getElementById('btnCatPembagian').className = 'py-2 px-3 rounded-xl border-2 border-emerald-500 font-bold text-xs text-center bg-emerald-100 text-emerald-800';
+            if (cat === 'campuran') document.getElementById('btnCatCampuran').className = 'py-2 px-3 rounded-xl border-2 border-emerald-500 font-bold text-xs text-center bg-emerald-100 text-emerald-800';
+        }
+
+        // Question Limit Selectors
+        function setQuestionLimit(num) {
+            globalConfig.questionLimit = num;
+            ['btnLimit10', 'btnLimit20', 'btnLimit30', 'btnLimitInf'].forEach(id => {
+                document.getElementById(id).className = 'py-2 rounded-xl border-2 border-slate-300 font-bold text-xs text-slate-600';
+            });
+
+            if (num === 10) document.getElementById('btnLimit10').className = 'py-2 rounded-xl border-2 border-emerald-500 font-bold text-xs bg-emerald-100 text-emerald-800';
+            if (num === 20) document.getElementById('btnLimit20').className = 'py-2 rounded-xl border-2 border-emerald-500 font-bold text-xs bg-emerald-100 text-emerald-800';
+            if (num === 30) document.getElementById('btnLimit30').className = 'py-2 rounded-xl border-2 border-emerald-500 font-bold text-xs bg-emerald-100 text-emerald-800';
+            if (num === 0) document.getElementById('btnLimitInf').className = 'py-2 rounded-xl border-2 border-emerald-500 font-bold text-xs bg-emerald-100 text-emerald-800';
+        }
+
+        // Timer Selectors
+        function setTimerSec(sec) {
+            globalConfig.timerSec = sec;
+            ['btnTimerOff', 'btnTimer10', 'btnTimer15', 'btnTimer20'].forEach(id => {
+                document.getElementById(id).className = 'py-2 rounded-xl border-2 border-slate-300 font-bold text-xs text-slate-600';
+            });
+
+            if (sec === 0) document.getElementById('btnTimerOff').className = 'py-2 rounded-xl border-2 border-emerald-500 font-bold text-xs bg-emerald-100 text-emerald-800';
+            if (sec === 10) document.getElementById('btnTimer10').className = 'py-2 rounded-xl border-2 border-emerald-500 font-bold text-xs bg-emerald-100 text-emerald-800';
+            if (sec === 15) document.getElementById('btnTimer15').className = 'py-2 rounded-xl border-2 border-emerald-500 font-bold text-xs bg-emerald-100 text-emerald-800';
+            if (sec === 20) document.getElementById('btnTimer20').className = 'py-2 rounded-xl border-2 border-emerald-500 font-bold text-xs bg-emerald-100 text-emerald-800';
+        }
+
+        // Fullscreen Toggle
+        document.getElementById('btnFullscreen').onclick = () => {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(() => {});
+            } else {
+                if (document.exitFullscreen) document.exitFullscreen();
+            }
+        };
+
+        // Modal Helpers
+        function openModal(id) {
+            document.getElementById(id).classList.remove('hidden');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
